@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>
+   My Web Page
+  </title>
+ </head>
+ <body>
+  <h1>
+   API Results
+  </h1>
+  {% for table in tables %}
+  <table>
+   <thead>
+    <tr>
+     <th>
+      ID
+     </th>
+     <th>
+      Name
+     </th>
+    </tr>
+   </thead>
+   <tbody>
+    {% for row in table %}
+    <tr>
+     <td>
+      {{ row.id }}
+     </td>
+     <td>
+      {{ row.name }}
+     </td>
+    </tr>
+    {% endfor %}
+   </tbody>
+  </table>
+  {% endfor %}
+ </body>
+</html>
