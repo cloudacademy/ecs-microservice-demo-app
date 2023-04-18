@@ -6,18 +6,19 @@ VERSION = "0.0.1"
 BOTTLEIP = "0.0.0.0"
 BOTTLEPORT = os.environ.get("SERVICE_PORT", 8080)
 
-SERVICE_HOST = os.environ.get("INTERNAL_ALB", "")
-SERVICES = os.environ.get("SERVICES", "").split(",")
+SERVICE_HOST = os.environ.get("SERVICE_HOST", "")
+SERVICES = [s for s in os.environ.get("SERVICES", "").split(",") if s]
 
 
 APP = Bottle(__name__)
 TEMPLATE_PATH.insert(0, "/root")
 
+
 def get_data(url):
     response = requests.get(url)
     response.raise_for_status()
     return response.json().get("response", [])
-    
+
 
 @APP.route("/")
 def index():

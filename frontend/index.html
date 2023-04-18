@@ -17,10 +17,19 @@
    <thead>
     <tr>
      <th>
-      ID
+      Record ID
      </th>
      <th>
       Name
+     </th>
+     <th>
+      Field one
+     </th>
+     <th>
+      Field two
+     </th>
+     <th>
+      Field three
      </th>
     </tr>
    </thead>
@@ -32,6 +41,15 @@
      </td>
      <td>
       {{ row.name }}
+     </td>
+     <td>
+      {{ row.field1}}
+     </td>
+     <td>
+      {{ row.field2 }}
+     </td>
+     <td>
+      {{ row.field3 }}
      </td>
     </tr>
     {% endfor %}
