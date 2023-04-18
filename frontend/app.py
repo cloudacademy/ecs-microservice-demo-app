@@ -21,7 +21,7 @@ def index():
     for service in SERVICES:
         if not service:
             continue
-        url = f"{SERVICE_HOST}/{service}"
+        url = f"http://{SERVICE_HOST}/{service}"
         response = requests.get(url).json()
         tables.append(response["response"])
 
