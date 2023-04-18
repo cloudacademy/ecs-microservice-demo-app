@@ -42,8 +42,8 @@ def generate_records():
     return records
 
 
-@APP.route("/", method=["OPTIONS", "GET"])
-def index():
+@APP.route(f"/{SERVICE}", method=["OPTIONS", "GET"])
+def data():
     try:
         body = generate_records()
 

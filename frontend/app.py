@@ -22,8 +22,11 @@ def index():
         if not service:
             continue
         url = f"http://{SERVICE_HOST}/{service}"
-        response = requests.get(url).json()
-        tables.append(response["response"])
+        print(url)
+        response = requests.get(url)
+        response.raise_for_status()
+        print(response)
+        tables.append(response.json()["response"])
 
     return jinja2_template("index.html", tables=tables)
 
