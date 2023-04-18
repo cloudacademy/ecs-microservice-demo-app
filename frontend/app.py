@@ -13,22 +13,28 @@ SERVICES = os.environ.get("SERVICES", "").split(",")
 APP = Bottle(__name__)
 TEMPLATE_PATH.insert(0, "/root")
 
+def get_data(url):
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.json().get("response", [])
+    
 
 @APP.route("/")
 def index():
     tables = []
+    message = ""
 
     for service in SERVICES:
         if not service:
             continue
         url = f"http://{SERVICE_HOST}/{service}"
-        print(url)
-        response = requests.get(url)
-        response.raise_for_status()
-        print(response)
-        tables.append(response.json()["response"])
+        try:
+            data = get_data(url)
+            tables.append(data)
+        except Exception as e:
+            message = str(e)
 
-    return jinja2_template("index.html", tables=tables)
+    return jinja2_template("index.html", tables=tables, message=message)
 
 
 if __name__ == "__main__":
