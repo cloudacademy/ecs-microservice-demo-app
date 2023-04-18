@@ -1,4 +1,4 @@
-from bottle import Bottle, jinja2_template
+from bottle import Bottle, jinja2_template, TEMPLATE_PATH
 import os
 import requests
 
@@ -11,6 +11,7 @@ SERVICES = os.environ.get("SERVICES", "").split(",")
 
 
 APP = Bottle(__name__)
+TEMPLATE_PATH.insert(0, "/root")
 
 
 @APP.route("/")
