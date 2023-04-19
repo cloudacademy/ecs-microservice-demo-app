@@ -1,4 +1,4 @@
-from bottle import Bottle, jinja2_template, TEMPLATE_PATH
+from bottle import Bottle, jinja2_template, TEMPLATE_PATH, static_file
 import os
 import requests
 
@@ -20,13 +20,18 @@ def get_data(url):
     return response.json().get("response", [])
 
 
+@APP.route("/static/<filepath:path>")
+def server_static(filepath):
+    return static_file(filepath, root="static")
+
+
 @APP.route("/")
 def index():
     tables = []
     message = ""
 
     for service in SERVICES:
-        if not service:
+        if not service or service == "":
             continue
         url = f"http://{SERVICE_HOST}/{service}"
         try:
