@@ -23,7 +23,7 @@ SERVICE = os.environ.get("SERVICE", "generic_service")
 APP = Bottle(__name__)
 
 xray_recorder.configure(service=SERVICE, dynamic_naming=SERVICE)
-app.install(XRayMiddleware(xray_recorder))
+APP.install(XRayMiddleware(xray_recorder))
 
 def generate_records():
     records = []

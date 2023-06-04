@@ -23,7 +23,7 @@ APP = Bottle(__name__)
 TEMPLATE_PATH.insert(0, "/root")
 
 xray_recorder.configure(service='frontend', dynamic_naming='frontend')
-app.install(XRayMiddleware(xray_recorder))
+APP.install(XRayMiddleware(xray_recorder))
 
 
 def get_data(url):
