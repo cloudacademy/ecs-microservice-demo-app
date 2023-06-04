@@ -9,7 +9,7 @@ from aws_xray_sdk.ext.bottle.middleware import XRayMiddleware
 from aws_xray_sdk.core import patch_all
 
 xray_recorder.configure(service='frontend')
-plugins = ('EC2Plugin', 'EC2Plugin')
+plugins = ('EC2Plugin', 'ECSPlugin')
 xray_recorder.configure(plugins=plugins)
 patch_all()
 
@@ -22,7 +22,7 @@ SERVICE = os.environ.get("SERVICE", "generic_service")
 
 APP = Bottle(__name__)
 
-xray_recorder.configure(service=SERVICE, dynamic_naming=SERVICE)
+xray_recorder.configure(service=f"{SERVICE}.lab.local", dynamic_naming="*.lab.local")
 APP.install(XRayMiddleware(xray_recorder))
 
 def generate_records():
