@@ -17,7 +17,6 @@ SERVICE = os.environ.get("SERVICE", "generic_service")
 
 APP = Bottle(__name__)
 
-xray_recorder.configure(service=f'{SERVICE}.lab.local')
 plugins = ('EC2Plugin', 'ECSPlugin')
 xray_recorder.configure(plugins=plugins)
 xray_recorder.configure(service=f'{SERVICE}.lab.local', dynamic_naming='*.lab.local')

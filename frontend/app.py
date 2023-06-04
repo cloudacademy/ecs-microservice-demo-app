@@ -11,6 +11,7 @@ VERSION = "0.0.1"
 BOTTLEIP = "0.0.0.0"
 BOTTLEPORT = os.environ.get("SERVICE_PORT", 8080)
 
+SERVICE = os.environ.get("SERVICE", "generic_service")
 SERVICE_HOST = os.environ.get("SERVICE_HOST", "")
 SERVICES = [s for s in os.environ.get("SERVICES", "").split(",") if s]
 
@@ -18,10 +19,9 @@ SERVICES = [s for s in os.environ.get("SERVICES", "").split(",") if s]
 APP = Bottle(__name__)
 TEMPLATE_PATH.insert(0, "/root")
 
-xray_recorder.configure(service='frontend.lab.local')
 plugins = ('EC2Plugin', 'ECSPlugin')
 xray_recorder.configure(plugins=plugins)
-xray_recorder.configure(service='frontend.lab.local', dynamic_naming='*.lab.local')
+xray_recorder.configure(service=f'{SERVICE}.lab.local', dynamic_naming='*.lab.local')
 APP.install(XRayMiddleware(xray_recorder))
 patch_all()
 
