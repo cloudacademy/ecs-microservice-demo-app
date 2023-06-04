@@ -6,10 +6,6 @@ from aws_xray_sdk.core import xray_recorder
 from aws_xray_sdk.ext.bottle.middleware import XRayMiddleware
 from aws_xray_sdk.core import patch_all
 
-xray_recorder.configure(service='frontend')
-plugins = ('EC2Plugin', 'ECSPlugin')
-xray_recorder.configure(plugins=plugins)
-patch_all()
 
 VERSION = "0.0.1"
 BOTTLEIP = "0.0.0.0"
@@ -22,8 +18,12 @@ SERVICES = [s for s in os.environ.get("SERVICES", "").split(",") if s]
 APP = Bottle(__name__)
 TEMPLATE_PATH.insert(0, "/root")
 
+xray_recorder.configure(service='frontend.lab.local')
+plugins = ('EC2Plugin', 'ECSPlugin')
+xray_recorder.configure(plugins=plugins)
 xray_recorder.configure(service='frontend.lab.local', dynamic_naming='*.lab.local')
 APP.install(XRayMiddleware(xray_recorder))
+patch_all()
 
 
 def get_data(url):

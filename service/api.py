@@ -8,10 +8,6 @@ from aws_xray_sdk.core import xray_recorder
 from aws_xray_sdk.ext.bottle.middleware import XRayMiddleware
 from aws_xray_sdk.core import patch_all
 
-xray_recorder.configure(service='frontend')
-plugins = ('EC2Plugin', 'ECSPlugin')
-xray_recorder.configure(plugins=plugins)
-patch_all()
 
 VERSION = "0.0.1"
 BOTTLEIP = "0.0.0.0"
@@ -19,11 +15,14 @@ BOTTLEPORT = os.environ.get("SERVICE_PORT", 8080)
 
 SERVICE = os.environ.get("SERVICE", "generic_service")
 
-
 APP = Bottle(__name__)
 
-xray_recorder.configure(service=f"{SERVICE}.lab.local", dynamic_naming="*.lab.local")
+xray_recorder.configure(service=f'{SERVICE}.lab.local')
+plugins = ('EC2Plugin', 'ECSPlugin')
+xray_recorder.configure(plugins=plugins)
+xray_recorder.configure(service=f'{SERVICE}.lab.local', dynamic_naming='*.lab.local')
 APP.install(XRayMiddleware(xray_recorder))
+patch_all()
 
 def generate_records():
     records = []
