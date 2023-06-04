@@ -2,6 +2,15 @@ from bottle import Bottle, jinja2_template, TEMPLATE_PATH, static_file
 import os
 import requests
 
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.ext.bottle.middleware import XRayMiddleware
+from aws_xray_sdk.core import patch_all
+
+xray_recorder.configure(service='frontend')
+plugins = ('EC2Plugin', 'EC2Plugin')
+xray_recorder.configure(plugins=plugins)
+patch_all()
+
 VERSION = "0.0.1"
 BOTTLEIP = "0.0.0.0"
 BOTTLEPORT = os.environ.get("SERVICE_PORT", 8080)
@@ -12,6 +21,9 @@ SERVICES = [s for s in os.environ.get("SERVICES", "").split(",") if s]
 
 APP = Bottle(__name__)
 TEMPLATE_PATH.insert(0, "/root")
+
+xray_recorder.configure(service='frontend', dynamic_naming='frontend')
+app.install(XRayMiddleware(xray_recorder))
 
 
 def get_data(url):
