@@ -3,16 +3,16 @@ import os
 import random
 import string
 import uuid
+import mysql.connector
 
 VERSION = "0.0.1"
 BOTTLEIP = "0.0.0.0"
 BOTTLEPORT = os.environ.get("SERVICE_PORT", 8080)
 
 SERVICE = os.environ.get("SERVICE", "generic_service")
-
+DB_HOST = os.environ["DB_HOST"]
 
 APP = Bottle(__name__)
-
 
 def generate_records():
     records = []
@@ -58,6 +58,12 @@ def data():
 
 
 if __name__ == "__main__":
+    try:
+        db = mysql.connector.connect(host = DB_HOST, user = 'root', password = 'followthewhiterabbit', port = 3306)
+        print("db connected successfully")
+    except Exception as e:
+        print("db not connected: {e}")
+
     try:
         SERVER = APP.run(host=BOTTLEIP, port=BOTTLEPORT, debug=True)
     except KeyboardInterrupt:
