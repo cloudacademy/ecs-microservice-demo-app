@@ -10,9 +10,18 @@ BOTTLEIP = "0.0.0.0"
 BOTTLEPORT = os.environ.get("SERVICE_PORT", 8080)
 
 SERVICE = os.environ.get("SERVICE", "generic_service")
-DB_HOST = os.environ.get("DB_HOST")
 
 APP = Bottle(__name__)
+
+DB_HOST = os.environ.get("DB_HOST")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+cnx = None
+try:
+    cnx = mysql.connector.connect(host=DB_HOST, user='root', password=DB_PASSWORD, port=3306)
+    print("db connected successfully")
+except Exception as e:
+    print("db connection failed")
+print(cnx)
 
 def generate_records():
     records = []
@@ -57,13 +66,13 @@ def data():
         return response
 
 
-if __name__ == "__main__":
-    try:
-        db = mysql.connector.connect(host = DB_HOST, user = 'root', password = 'followthewhiterabbit', port = 3306)
-        print("db connected successfully")
-    except Exception as e:
-        print("db not connected: {e}")
+@APP.route("/ok", method=["GET"])
+def ok():
+    response = HTTPResponse(status=200, body="OK!\n")
+    response.content_type = "text/plain"
+    return response
 
+if __name__ == "__main__":
     try:
         SERVER = APP.run(host=BOTTLEIP, port=BOTTLEPORT, debug=True)
     except KeyboardInterrupt:

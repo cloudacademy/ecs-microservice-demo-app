@@ -1,4 +1,4 @@
-from bottle import Bottle, jinja2_template, TEMPLATE_PATH, static_file
+from bottle import Bottle, jinja2_template, TEMPLATE_PATH, static_file, HTTPResponse
 import os
 import requests
 
@@ -41,6 +41,13 @@ def index():
             message = str(e)
 
     return jinja2_template("index.html", tables=tables, message=message)
+
+
+@APP.route("/ok", method=["GET"])
+def ok():
+    response = HTTPResponse(status=200, body="OK!\n")
+    response.content_type = "text/plain"
+    return response
 
 
 if __name__ == "__main__":
