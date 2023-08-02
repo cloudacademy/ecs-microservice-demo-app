@@ -10,7 +10,7 @@ BOTTLEIP = "0.0.0.0"
 BOTTLEPORT = os.environ.get("SERVICE_PORT", 8080)
 
 SERVICE = os.environ.get("SERVICE", "generic_service")
-DB_HOST = os.environ["DB_HOST"]
+DB_HOST = os.environ.get["DB_HOST"]
 
 APP = Bottle(__name__)
 
