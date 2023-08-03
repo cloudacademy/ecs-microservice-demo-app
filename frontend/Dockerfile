@@ -5,5 +5,5 @@ RUN apk update && \
 COPY app.py /root/app.py
 COPY index.html /root/index.html
 COPY static/pico.css /root/static/pico.css
-CMD [ "sh", "-c", "python /root/app.py" ]
+CMD ["python", "-u", "/root/app.py"]
 EXPOSE 8080
